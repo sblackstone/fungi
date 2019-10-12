@@ -26,13 +26,10 @@ def fetchCachedRequest(hash):
         f = open(cachePath, 'r')
         contents = f.read()
         try:
-            print("Cache hit!")
             return json.loads(contents)
         except:
-            print("CACHE MISS")
             return None
     else:
-        print("CACHE MISS 2")
         return None
 
 def writeCache(hash, data):
@@ -106,24 +103,29 @@ titles = filterBacklinks(fetchBacklinkPages())
 data = []
 
 ##### THIS LIMITS IT TO FIRST 3!
-for title in titles[:3]:
-    result = fetchPageContent(title)
-    content = extractPageContent(result)
-    reg = re.compile("\{\{mycomorphbox[^\}]*", re.MULTILINE)
-    rawBox = reg.findall(content)
-    if len(rawBox) == 0:
-        print("Skipping: {}".format(title))
-        continue
-    rawBox = rawBox[0]
+for title in titles:
+    try:
+        result = fetchPageContent(title)
+        content = extractPageContent(result)
+        reg = re.compile("\{\{mycomorphbox[^\}]*", re.MULTILINE)
+        rawBox = reg.findall(content)
+        if len(rawBox) == 0:
+            print("Skipping: {}".format(title))
+            continue
+        rawBox = rawBox[0]
 
-    rawBox = rawBox.replace("\n", "")
-    obj = {}
-    lines = rawBox.split("|")
-    for i in range(1, len(lines)):
-        line = lines[i]
-        [key,val] = line.split("=")
-        obj[key.strip()] = val.strip()
-    obj["name"] = title
-    data.append(obj)
+        rawBox = rawBox.replace("\n", "")
+        obj = {}
+        lines = rawBox.split("|")
+        for i in range(1, len(lines)):
+            line = lines[i]
+            [key,val] = line.split("=")
+            obj[key.strip()] = val.strip()
+        obj["name"] = title
+        data.append(obj)
+    except:
+        print("FAILED FOR {}")
 
-print(json.dumps(data))
+f = open("fungi.json", "w")
+f.write(json.dumps(data))
+f.close()
