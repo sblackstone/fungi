@@ -2,9 +2,30 @@ import requests
 import re
 import os
 import json
+import hashlib
 from IPython import embed
 
+## assumes a query to be a flat dit.
+def queryToCacheKey(query):
+    result = ""
+    keys = list(query.keys())
+    keys.sort()
+    for k in keys:
+        result += "{}|{}|".format(k,query[k])
+    hash = hashlib.sha256(result.encode("utf-8"))
+    return hash.hexdigest()
+
+def fetchCachedRequest(hash):
+    basePath = os.path.dirname(os.path.abspath(__file__))
+    cachePath = os.path.join(basePath, "apiCache", "{}.json".format(hash))
+    embed()
+
 def apiRequest(params):
+    key = queryToCacheKey(params)
+    data = fetchCachedRequest(key)
+    if data != None:
+        return data
+
     s = requests.Session()
     url = "https://en.wikipedia.org/w/api.php"
 
@@ -65,8 +86,8 @@ def extractPageContent(result):
 titles = filterBacklinks(fetchBacklinkPages())
 data = []
 
-##### THIS LIMITS IT TO FIRST 5!
-for title in titles[:5]:
+##### THIS LIMITS IT TO FIRST 3!
+for title in titles[:3]:
     result = fetchPageContent(title)
     content = extractPageContent(result)
     reg = re.compile("\{\{mycomorphbox[^\}]*", re.MULTILINE)
