@@ -64,6 +64,8 @@ def extractPageContent(result):
 
 titles = filterBacklinks(fetchBacklinkPages())
 data = []
+
+##### THIS LIMITS IT TO FIRST 5!
 for title in titles[:5]:
     result = fetchPageContent(title)
     content = extractPageContent(result)
