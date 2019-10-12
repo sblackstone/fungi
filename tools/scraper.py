@@ -40,9 +40,21 @@ def filterBacklinks(backlinks):
             goodPages.append(title)
     return goodPages
 
+#TODO FIXME
+def fetchPage(title):
+    page = apiRequest({
+            "action": "query",
+            "format": "json",
+#            "list": "backlinks",
+#            "blnamespace": "articles",
+#            "bllimit": 5000,
+#            "bltitle": "Template:Mycomorphbox"
+        })
 
+    return page
 
-pages = filterBacklinks(fetchBacklinkPages())
+titles = filterBacklinks(fetchBacklinkPages())
 
-for page in pages:
-    print(page)
+for title in titles:
+    print(title)
+    print(fetchPage(title))
