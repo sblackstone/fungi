@@ -123,8 +123,10 @@ for title in titles:
             obj[key.strip()] = val.strip()
         obj["name"] = title
         data.append(obj)
-    except:
-        print("FAILED FOR {}")
+    except Exception as e:
+        print("FAILED FOR {}".format(title))
+        print(e)
+
 
 f = open("fungi.json", "w")
 f.write(json.dumps(data))
