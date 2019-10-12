@@ -1,5 +1,8 @@
 import requests
-
+import re
+import os
+import json
+from IPython import embed
 
 def apiRequest(params):
     s = requests.Session()
@@ -12,7 +15,6 @@ def apiRequest(params):
     #return data["query"]["backlinks"]
 
 def fetchBacklinkPages():
-
     blps = apiRequest({
             "action": "query",
             "format": "json",
@@ -40,21 +42,46 @@ def filterBacklinks(backlinks):
             goodPages.append(title)
     return goodPages
 
-#TODO FIXME
-def fetchPage(title):
+#TODO
+def fetchPageContent(title):
     page = apiRequest({
             "action": "query",
             "format": "json",
-#            "list": "backlinks",
-#            "blnamespace": "articles",
-#            "bllimit": 5000,
-#            "bltitle": "Template:Mycomorphbox"
-        })
+            "prop": "revisions",
+            "rvprop": "content",
+            "redirects": 1,
+            "titles": title
+    })
 
     return page
 
-titles = filterBacklinks(fetchBacklinkPages())
 
-for title in titles:
-    print(title)
-    print(fetchPage(title))
+def extractPageContent(result):
+    data = result["query"]["pages"]
+    data = list(data.values())[0]
+    content = data["revisions"][0]['*']
+    return content
+
+titles = filterBacklinks(fetchBacklinkPages())
+data = []
+for title in titles[:5]:
+    result = fetchPageContent(title)
+    content = extractPageContent(result)
+    reg = re.compile("\{\{mycomorphbox[^\}]*", re.MULTILINE)
+    rawBox = reg.findall(content)
+    if len(rawBox) == 0:
+        print("Skipping: {}".format(title))
+        continue
+    rawBox = rawBox[0]
+
+    rawBox = rawBox.replace("\n", "")
+    obj = {}
+    lines = rawBox.split("|")
+    for i in range(1, len(lines)):
+        line = lines[i]
+        [key,val] = line.split("=")
+        obj[key.strip()] = val.strip()
+    obj["name"] = title
+    data.append(obj)
+
+print(json.dumps(data))
