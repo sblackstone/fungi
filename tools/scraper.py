@@ -15,10 +15,30 @@ def queryToCacheKey(query):
     hash = hashlib.sha256(result.encode("utf-8"))
     return hash.hexdigest()
 
-def fetchCachedRequest(hash):
+def cachePathForHash(hash):
     basePath = os.path.dirname(os.path.abspath(__file__))
-    cachePath = os.path.join(basePath, "apiCache", "{}.json".format(hash))
-    embed()
+    return os.path.join(basePath, "cache", "{}.json".format(hash))
+
+
+def fetchCachedRequest(hash):
+    cachePath = cachePathForHash(hash)
+    if os.path.exists(cachePath):
+        f = open(cachePath, 'r')
+        contents = f.read()
+        try:
+            print("Cache hit!")
+            return json.loads(contents)
+        except:
+            print("CACHE MISS")
+            return None
+    else:
+        print("CACHE MISS 2")
+        return None
+
+def writeCache(hash, data):
+    cachePath = cachePathForHash(hash)
+    f = open(cachePath, 'w')
+    f.write(json.dumps(data))
 
 def apiRequest(params):
     key = queryToCacheKey(params)
@@ -28,10 +48,9 @@ def apiRequest(params):
 
     s = requests.Session()
     url = "https://en.wikipedia.org/w/api.php"
-
     r = s.get(url=url, params=params)
     data = r.json()
-
+    writeCache(key, data)
     return data
     #return data["query"]["backlinks"]
 
