@@ -138,8 +138,11 @@ for title in titles:
         result = fetchPageContent(title)
         content = extractPageContent(result)
         obj = extractBox(content, "mycomorphbox")
-        if obj != None:
-            data.append(obj)
+        obj2 = extractBox(content, "Speciesbox")
+
+        if obj2 != None:
+            data.append({"myco": obj, "species": obj2})
+
     except Exception as e:
         print("FAILED FOR {}".format(title))
         print(e)
