@@ -1,5 +1,5 @@
 import React from 'react';
-
+import FungiList from './fungi_list';
 
 class Fungi extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class Fungi extends React.Component {
 
   render() {
     return(
-      <h1>Hello</h1>
+      <FungiList />
     )
   }
 

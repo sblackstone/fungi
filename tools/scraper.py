@@ -120,6 +120,11 @@ def extractBox(data, boxName):
         except:
             pass
         obj[key.strip()] = val.strip()
+    if obj["name"].startswith("''"):
+        obj["name"] = obj["name"][2:]
+    if obj["name"].endswith("''"):
+        obj["name"] = obj["name"][0:-2]
+
     return obj
 
 
@@ -138,10 +143,10 @@ for title in titles:
         result = fetchPageContent(title)
         content = extractPageContent(result)
         obj = extractBox(content, "mycomorphbox")
-        obj2 = extractBox(content, "Speciesbox")
+        #obj2 = extractBox(content, "Speciesbox")
 
-        if obj2 != None:
-            data.append({"myco": obj, "species": obj2})
+        if obj != None:
+            data.append(obj)
 
     except Exception as e:
         print("FAILED FOR {}".format(title))
