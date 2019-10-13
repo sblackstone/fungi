@@ -153,8 +153,28 @@ for title in titles:
         print(e)
 
 
-f = open("fungi.json", "w")
-f.write(json.dumps(data))
+allkeys = {}
+
+for row in data:
+    for key in list(row.keys()):
+        if key != "name":
+            allkeys[key] = allkeys.get(key) or {}
+            for value in list(row.values()):
+                allkeys[key][value] = True
+
+
+meta = {
+  "keys": allkeys
+}
+
+
+result = {
+  "fungi": data,
+  "meta": meta
+}
+
+f = open("../src/fungi.json", "w")
+f.write(json.dumps(result))
 f.close()
 for x in data:
     pass

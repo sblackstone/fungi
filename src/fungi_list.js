@@ -1,9 +1,8 @@
 import React from 'react';
-import fungi from './fungi.json';
 
 const FungiItem = (props) => {
   return (
-    <div class="fungi-item">{props.fungi.name}</div>
+    <div className="fungi-item">{props.fungi.name}</div>
   )
 };
 
@@ -13,9 +12,9 @@ class FungiList extends React.Component {
   }
 
   render() {
-    return fungi.map(x => {
+    return this.props.fungi.fungi.map(x => {
       return (
-        <FungiItem fungi={x} />
+        <FungiItem key={x.name} fungi={x} />
       )
     })
   }
