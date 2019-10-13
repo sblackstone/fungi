@@ -52,33 +52,35 @@ def apiRequest(params):
     #return data["query"]["backlinks"]
 
 def fetchBacklinkPages():
-    blps = apiRequest({
+
+    query = {
             "action": "query",
             "format": "json",
-            "list": "backlinks",
-            "blnamespace": "articles",
-            "bllimit": 5000,
-            "bltitle": "Template:Mycomorphbox"
-        })
+            "prop": "transcludedin",
+            "tilimit": 5000,
+            "tinamespace": 0,
+            "titles": "Template:Mycomorphbox",
+            "ticontinue": 0
+    }
 
-    return blps["query"]["backlinks"]
+    results = []
+    while True:
+        data = apiRequest(query)
 
-def isSkip(str):
-        skips = ["Talk", "Wikipedia", "Template", "User"]
-        for s in skips:
-            if str.startswith(s):
-                return True
-        return False
+        keys = list(data["query"]["pages"].keys())
+        data2 = data["query"]["pages"][keys[0]]["transcludedin"]
+        results = results + data2
+
+        if not "continue" in data:
+            break
+
+        query["ticontinue"] = data["continue"]["ticontinue"]
+
+    return results
+
 
 def filterBacklinks(backlinks):
-    goodPages = []
-
-    for b in backlinks:
-        title = b["title"]
-        if not isSkip(title):
-            goodPages.append(title)
-    return goodPages
-
+    return [ bl["title"] for bl in backlinks]
 #TODO
 def fetchPageContent(title):
     page = apiRequest({
@@ -100,17 +102,23 @@ def extractPageContent(result):
     return content
 
 titles = filterBacklinks(fetchBacklinkPages())
+titles.sort()
 data = []
 
 ##### THIS LIMITS IT TO FIRST 3!
+count = 0
 for title in titles:
+    #if title != 'Lepiota brunneoincarnata':
+    #    continue
+    print(title)
     try:
+        count += 1
         result = fetchPageContent(title)
         content = extractPageContent(result)
-        reg = re.compile("\{\{mycomorphbox[^\}]*", re.MULTILINE)
+        reg = re.compile("mycomorphbox[^\}]*", re.MULTILINE | re.IGNORECASE)
         rawBox = reg.findall(content)
         if len(rawBox) == 0:
-            print("Skipping: {}".format(title))
+            print("Box not found: {}".format(title))
             continue
         rawBox = rawBox[0]
 
@@ -119,11 +127,15 @@ for title in titles:
         lines = rawBox.split("|")
         for i in range(1, len(lines)):
             line = lines[i]
-            [key,val] = line.split("=")
+            try:
+                [key,val] = line.split("=")
+            except:
+                pass
             obj[key.strip()] = val.strip()
         obj["name"] = title
         data.append(obj)
     except Exception as e:
+        print(json.dumps(rawBox, indent=4))
         print("FAILED FOR {}".format(title))
         print(e)
 
@@ -131,3 +143,7 @@ for title in titles:
 f = open("fungi.json", "w")
 f.write(json.dumps(data))
 f.close()
+for x in data:
+    pass
+    #print(json.dumps(x))
+print("Found {} pages".format(count))
