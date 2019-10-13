@@ -1,11 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import Fungi from './fungi';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
   return (
-    <Fungi />
+    <div className="container-fluid">
+      <Fungi />
+    </div>
   );
 }
 

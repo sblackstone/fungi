@@ -3,6 +3,7 @@ import re
 import os
 import json
 import hashlib
+import pandas
 from IPython import embed
 
 ## assumes a query to be a flat dit.
@@ -117,9 +118,12 @@ def extractBox(data, boxName):
         line = lines[i]
         try:
             [key,val] = line.split("=")
+            obj[key.strip()] = val.strip()
+            print("{}: {}".format(key, value))
+
         except:
             pass
-        obj[key.strip()] = val.strip()
+
     if obj["name"].startswith("''"):
         obj["name"] = obj["name"][2:]
     if obj["name"].endswith("''"):
@@ -137,7 +141,7 @@ count = 0
 for title in titles:
     #if title != 'Lepiota brunneoincarnata':
     #    continue
-    print(title)
+    # print(title)
     try:
         count += 1
         result = fetchPageContent(title)
@@ -156,17 +160,22 @@ for title in titles:
 allkeys = {}
 
 for row in data:
-    for key in list(row.keys()):
-        if key != "name":
-            allkeys[key] = allkeys.get(key) or {}
-            for value in list(row.values()):
-                allkeys[key][value] = True
+    for k in list(row.keys()):
+        if k != "name":
+            if row[k] == "":
+                row[k] = "NA"
+            allkeys[k] = allkeys.get(k) or {}
+            allkeys[k][row[k]] = True
 
+tmp = list(allkeys.keys())
+
+
+for x in tmp:
+    allkeys[x] = list(allkeys[x].keys())
 
 meta = {
-  "keys": allkeys
+  "attributes": allkeys
 }
-
 
 result = {
   "fungi": data,
@@ -176,7 +185,5 @@ result = {
 f = open("../src/fungi.json", "w")
 f.write(json.dumps(result))
 f.close()
-for x in data:
-    pass
-    #print(json.dumps(x))
+
 print("Found {} pages".format(count))

@@ -1,4 +1,5 @@
 import React from 'react';
+import './fungi_list.scss';
 
 const FungiItem = (props) => {
   return (
@@ -7,12 +8,9 @@ const FungiItem = (props) => {
 };
 
 class FungiList extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   render() {
-    return this.props.fungi.fungi.map(x => {
+    return this.props.fungi.map(x => {
       return (
         <FungiItem key={x.name} fungi={x} />
       )
