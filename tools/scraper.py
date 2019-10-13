@@ -101,6 +101,28 @@ def extractPageContent(result):
     content = data["revisions"][0]['*']
     return content
 
+def extractBox(data, boxName):
+    regEx = '{{' + boxName + '[^\}]*'
+    reg = re.compile(regEx, re.MULTILINE | re.IGNORECASE)
+    rawBox = reg.findall(content)
+    if len(rawBox) == 0:
+        print("Box not found: {}".format(title))
+        return None
+    rawBox = rawBox[0]
+
+    rawBox = rawBox.replace("\n", "")
+    obj = {}
+    lines = rawBox.split("|")
+    for i in range(1, len(lines)):
+        line = lines[i]
+        try:
+            [key,val] = line.split("=")
+        except:
+            pass
+        obj[key.strip()] = val.strip()
+    return obj
+
+
 titles = filterBacklinks(fetchBacklinkPages())
 titles.sort()
 data = []
@@ -115,27 +137,10 @@ for title in titles:
         count += 1
         result = fetchPageContent(title)
         content = extractPageContent(result)
-        reg = re.compile("mycomorphbox[^\}]*", re.MULTILINE | re.IGNORECASE)
-        rawBox = reg.findall(content)
-        if len(rawBox) == 0:
-            print("Box not found: {}".format(title))
-            continue
-        rawBox = rawBox[0]
-
-        rawBox = rawBox.replace("\n", "")
-        obj = {}
-        lines = rawBox.split("|")
-        for i in range(1, len(lines)):
-            line = lines[i]
-            try:
-                [key,val] = line.split("=")
-            except:
-                pass
-            obj[key.strip()] = val.strip()
-        obj["name"] = title
-        data.append(obj)
+        obj = extractBox(content, "mycomorphbox")
+        if obj != None:
+            data.append(obj)
     except Exception as e:
-        print(json.dumps(rawBox, indent=4))
         print("FAILED FOR {}".format(title))
         print(e)
 

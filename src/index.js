@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import fungi from './fungi.json';
+
+window.fungi = fungi;
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
