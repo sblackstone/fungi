@@ -3,7 +3,7 @@ import fungi from './fungi.json';
 
 const FungiItem = (props) => {
   return (
-    <div>{props.fungi.name}</div>
+    <div class="fungi-item">{props.fungi.name}</div>
   )
 };
 
