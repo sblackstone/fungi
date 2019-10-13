@@ -12,7 +12,19 @@ class Fungi extends React.Component {
       visibleFungi: fungi.fungi.slice(0),
       filters: {
       }
-    }
+    };
+
+    this.filterAliases = {
+      "capShape":        ["capShape2"],
+      "ecologicalType":  ["ecologicalType2"],
+      "howEdible":       ["howEdible2"],
+      "sporePrintColor": ["sporePrintColor2"],
+      "stipeCharacter":  ["stipeCharacter2"],
+      "whichGills":      ["whichGills2", "whichGills3"]
+    };
+
+    this.filteredFields = Object.values(this.filterAliases).flat();
+    console.log(this.filteredFields);
     this.filterTypes = Object.keys(fungi.meta.attributes);
     this.filterTypes.forEach(ft => this.initialState.filters[ft] = "");
     this.state = Object.assign({}, this.initialState);
@@ -52,11 +64,12 @@ class Fungi extends React.Component {
   render() {
     return(
       <div className="row">
-        <div className="col col-md-4">
-          <button className="btn btn-sm btn-primary" onClick={this.resetFilters.bind(this)}>Reset</button>
-          <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
+        <div className="col col-md-2">
+          <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
+          <br className="clearfix" />
+          <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} filteredFields={this.filteredFields} />
         </div>
-        <div className="col col-md-8">
+        <div className="col col-md-10">
           <h3>Showing {this.state.visibleFungi.length}</h3>
           <div className="fungi-list-container">
             <FungiList fungi={this.state.visibleFungi} />

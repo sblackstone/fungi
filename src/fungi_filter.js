@@ -2,7 +2,11 @@ import React from 'react';
 import fungi from './fungi.json';
 
 const SelectOptions = (props) => {
-  return fungi.meta.attributes[props.filterName].map(x => <option key={`${x}:${props.filterName}`} value={x}>{x}</option> )
+
+
+  const opts = fungi.meta.attributes[props.filterName];
+  opts.sort();
+  return opts.map(x => <option key={`${x}:${props.filterName}`} value={x}>{x}</option> )
 
 }
 
@@ -19,7 +23,10 @@ const FilterField = (props) => {
 }
 
 const FungiFilterFields = (props) => {
-  return Object.keys(fungi.meta.attributes).map(x => {
+  let fields =  Object.keys(fungi.meta.attributes);
+  fields = fields.filter(x => props.filteredFields.indexOf(x) === -1);
+  fields.sort();
+  return fields.map(x => {
     return (
       <FilterField key={x} label={x} filters={props.filters} field={x} updateFilterSettings={props.updateFilterSettings}/>
     )
