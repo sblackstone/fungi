@@ -34,6 +34,7 @@ const FungiItem = (props) => {
         <h5>{props.fungi.name.join("")}</h5>     
       </div>
       <div className="card-body">
+        <img src="./amanita_bisporigera.jpg" />
         <table>
           <tbody className='card-text'>
             <FungiProps key={fungiPropsKey} fungi={props.fungi} />
