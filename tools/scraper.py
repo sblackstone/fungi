@@ -118,16 +118,28 @@ def extractBox(data, boxName):
         line = lines[i]
         try:
             [key,val] = line.split("=")
-            obj[key.strip()] = val.strip()
-            print("{}: {}".format(key, value))
+            key = key.strip()
+            val = val.strip()
+            key = re.sub("[0-9]+$", "", key)
+            if key == "name":
+                if val.startswith("''"):
+                    val = val[2:]
+                if val.endswith("''"):
+                    val = val[0:-2]
 
-        except:
+            if val == "":
+                continue    
+            if val == "NA":
+                continue
+
+            obj[key] = obj.get(key) or []
+            obj[key].append(val)                            
+            print("{}: {}".format(key, val))
+
+        except Exception as err:
+            print(err)
             pass
 
-    if obj["name"].startswith("''"):
-        obj["name"] = obj["name"][2:]
-    if obj["name"].endswith("''"):
-        obj["name"] = obj["name"][0:-2]
 
     return obj
 
@@ -160,12 +172,12 @@ for title in titles:
 allkeys = {}
 
 for row in data:
+    print(json.dumps(row))
     for k in list(row.keys()):
         if k != "name":
-            if row[k] == "":
-                row[k] = "NA"
             allkeys[k] = allkeys.get(k) or {}
-            allkeys[k][row[k]] = True
+            for x in row[k]:
+                allkeys[k][x] = True
 
 tmp = list(allkeys.keys())
 
