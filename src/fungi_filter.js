@@ -1,5 +1,6 @@
 import React from 'react';
 import fungi from './fungi.json';
+import { labelMap } from './constants.js';
 
 const SelectOptions = (props) => {
 
@@ -11,9 +12,13 @@ const SelectOptions = (props) => {
 }
 
 const FilterField = (props) => {
+    let label = props.label;
+    if (label in labelMap) {
+      label = labelMap[label];
+    }
     return (
       <div className="form-group">
-        <label>{props.label}</label>
+        <label>{label}</label>
         <select className="form-control" value={props.filters[props.field]} onChange={(e) => props.updateFilterSettings(props.field, e.target.value)}>
           <option value="">Any</option>
           <SelectOptions filterName={props.field} />

@@ -1,25 +1,15 @@
 import React from 'react';
 import './fungi_list.scss';
 import fungi from './fungi.json';
+import { labelMap } from './constants.js';
 
-const labelMap = {
-  "name": "Name",
-  "whichGills": "Gill Type",
-  "capShape": "Cap Shape",
-  "hymeniumType": "Hymenium Type",
-  "stipeCharacter": "Stipe Features",
-  "ecologicalType": "Ecology",
-  "sporePrintColor": "Spore Color",
-  "howEdible": "Edibility"
-}
 
 
 const FieldLabel = (props) => {
-  if (!(props.field in labelMap)) {
-    return props.field;
+  if (props.field in labelMap) {
+    return (labelMap[props.field]);    
   } else {
-    return (labelMap[props.field]);
-
+    return props.field;
   }
 }
 
