@@ -24,7 +24,6 @@ const FilterField = (props) => {
 
 const FungiFilterFields = (props) => {
   let fields =  Object.keys(fungi.meta.attributes);
-  fields = fields.filter(x => props.filteredFields.indexOf(x) === -1);
   fields.sort();
   return fields.map(x => {
     return (

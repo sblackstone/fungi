@@ -131,6 +131,8 @@ def extractBox(data, boxName):
                 continue    
             if val == "NA":
                 continue
+            if val == "unknown":
+                continue
 
             obj[key] = obj.get(key) or []
             obj[key].append(val)                            
@@ -162,6 +164,7 @@ for title in titles:
         #obj2 = extractBox(content, "Speciesbox")
 
         if obj != None:
+            obj["id"] = count
             data.append(obj)
 
     except Exception as e:
@@ -174,7 +177,7 @@ allkeys = {}
 for row in data:
     print(json.dumps(row))
     for k in list(row.keys()):
-        if k != "name":
+        if k != "name" and k != "id":
             allkeys[k] = allkeys.get(k) or {}
             for x in row[k]:
                 allkeys[k][x] = True

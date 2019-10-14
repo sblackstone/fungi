@@ -14,17 +14,8 @@ class Fungi extends React.Component {
       }
     };
 
-    this.filterAliases = {
-      "capShape":        ["capShape2"],
-      "ecologicalType":  ["ecologicalType2"],
-      "howEdible":       ["howEdible2"],
-      "sporePrintColor": ["sporePrintColor2"],
-      "stipeCharacter":  ["stipeCharacter2"],
-      "whichGills":      ["whichGills2", "whichGills3"]
-    };
 
-    this.filteredFields = Object.values(this.filterAliases).flat();
-    console.log(this.filteredFields);
+
     this.filterTypes = Object.keys(fungi.meta.attributes);
     this.filterTypes.forEach(ft => this.initialState.filters[ft] = "");
     this.state = Object.assign({}, this.initialState);
@@ -34,12 +25,28 @@ class Fungi extends React.Component {
   updateFilterSettings(filter, value) {
     let newFilters = Object.assign({}, this.state.filters);
     newFilters[filter] = value
+    
     const newVisibleFungi = fungi.fungi.filter(f => {
       for (let i = 0; i < this.filterTypes.length; i++) {
         const ft = this.filterTypes[i];
-        if (newFilters[ft] !== '' && f[ft] !== newFilters[ft]) {
-          return(false);
+        const fv = newFilters[ft];
+
+        if (ft === '') {
+          continue;
         }
+
+        if (fv === '') {
+          continue;
+        }
+        
+        if (!(ft in f)) {
+          return false;
+        }
+        
+        if (f[ft].indexOf(fv) === -1) {
+          return false;
+        }            
+        
       }
       return true;
     });
@@ -67,7 +74,7 @@ class Fungi extends React.Component {
         <div className="col col-md-2">
           <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
           <br className="clearfix" />
-          <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} filteredFields={this.filteredFields} />
+          <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
         </div>
         <div className="col col-md-10">
           <h3>Showing {this.state.visibleFungi.length}</h3>
