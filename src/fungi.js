@@ -72,12 +72,11 @@ class Fungi extends React.Component {
     return(
       <div className="row">
         <div className="col col-md-2">
-          <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
-          <br className="clearfix" />
           <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
+          <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
         </div>
         <div className="col col-md-10">
-          <h3>Showing {this.state.visibleFungi.length}</h3>
+          <h5>Showing {this.state.visibleFungi.length} Matches</h5>
           <div className="fungi-list-container">
             <FungiList fungi={this.state.visibleFungi} />
           </div>

@@ -29,13 +29,17 @@ const FungiItem = (props) => {
   const fungiPropsKey = `${props.fungi.id}:props`;
   
   return (
-    <div className="fungi-item">
-      <h5>{props.fungi.name.join("")}</h5>     
-      <table>
-        <tbody>
-          <FungiProps key={fungiPropsKey} fungi={props.fungi} />
-        </tbody>
-      </table> 
+    <div className="fungi-item card">
+      <div className="card-header">
+        <h5>{props.fungi.name.join("")}</h5>     
+      </div>
+      <div className="card-body">
+        <table>
+          <tbody className='card-text'>
+            <FungiProps key={fungiPropsKey} fungi={props.fungi} />
+          </tbody>
+        </table> 
+      </div>
     </div>
   )
 };

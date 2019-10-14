@@ -161,10 +161,12 @@ for title in titles:
         result = fetchPageContent(title)
         content = extractPageContent(result)
         obj = extractBox(content, "mycomorphbox")
-        #obj2 = extractBox(content, "Speciesbox")
+        obj2 = extractBox(content, "Speciesbox")
 
         if obj != None:
             obj["id"] = count
+            #if obj2 != None and "image" in obj2:
+            #    obj["image"] = obj2["image"]
             data.append(obj)
 
     except Exception as e:

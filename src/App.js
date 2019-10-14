@@ -1,6 +1,6 @@
 import React from 'react';
 import Fungi from './fungi';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './bootstrap.min.css';
 import './App.css';
 
 function App() {

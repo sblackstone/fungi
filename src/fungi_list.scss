@@ -1,14 +1,14 @@
 .fungi-item {
   width: 18vw;
-  height:18vw;
-  margin: 5px;
-  padding: 5px;
-  background-color: #eee;
+  table {
+    width: 100%;
+  }
+  margin-bottom: 5vh;
 }
 
 .fungi-list-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 }
