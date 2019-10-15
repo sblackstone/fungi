@@ -37,7 +37,7 @@ const FungiItem = (props) => {
       </div>
       <div className="card-body">
         <LazyLoad>
-          <img src={props.fungi.image} />
+          <img alt={props.fungi.name} src={props.fungi.image} />
         </LazyLoad>
         <table>
           <tbody className='card-text'>

@@ -1,6 +1,7 @@
 import React from 'react';
 import fungi from './fungi.json';
 import { labelMap } from './constants.js';
+import { forceCheck } from 'react-lazyload';
 
 const SelectOptions = (props) => {
 
@@ -39,8 +40,15 @@ const FungiFilterFields = (props) => {
 
 class FungiFilter extends React.Component {
     render() {
+      console.log(this.props.filters);
       return (
-        <FungiFilterFields {...this.props } />
+        <div>
+          <div className="form-group">
+            <label>Name</label>
+            <input className="form-control form-control-sm" type="text" value={this.props.filters.nameSearch} onChange={(e) => this.props.updateFilterSettings("nameSearch", e.target.value)} />
+            <FungiFilterFields {...this.props } />
+          </div>
+        </div>
       )
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import FungiList from './fungi_list';
 import FungiFilter from './fungi_filter';
 import fungi from './fungi.json';
-
+import { forceCheck } from 'react-lazyload';
 class Fungi extends React.Component {
   constructor(props) {
     super(props);
@@ -17,12 +17,14 @@ class Fungi extends React.Component {
 
 
     this.filterTypes = Object.keys(fungi.meta.attributes);
+    this.filterTypes.push("nameSearch");
     this.filterTypes.forEach(ft => this.initialState.filters[ft] = "");
     this.state = Object.assign({}, this.initialState);
     console.log(this.initialState);
   }
 
   updateFilterSettings(filter, value) {
+    console.log("updateFilterSettings");
     let newFilters = Object.assign({}, this.state.filters);
     newFilters[filter] = value
     
@@ -39,9 +41,20 @@ class Fungi extends React.Component {
           continue;
         }
         
+        
+        if (ft === "nameSearch") {
+          if (!(f.name[0].match(fv))) {
+            return false;
+          } else {
+            continue;
+          }
+        };
+
         if (!(ft in f)) {
           return false;
         }
+
+
         
         if (f[ft].indexOf(fv) === -1) {
           return false;
@@ -56,7 +69,7 @@ class Fungi extends React.Component {
       visibleFungi: newVisibleFungi
     })
 
-
+    setTimeout(forceCheck, 25);
 
   }
 
