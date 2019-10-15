@@ -2,7 +2,7 @@ import React from 'react';
 import './fungi_list.scss';
 import fungi from './fungi.json';
 import { labelMap } from './constants.js';
-
+import LazyLoad from 'react-lazyload';
 
 
 const FieldLabel = (props) => {
@@ -36,7 +36,9 @@ const FungiItem = (props) => {
       </a>
       </div>
       <div className="card-body">
-        <img src={props.fungi.image} />
+        <LazyLoad>
+          <img src={props.fungi.image} />
+        </LazyLoad>
         <table>
           <tbody className='card-text'>
             <FungiProps key={fungiPropsKey} fungi={props.fungi} />
