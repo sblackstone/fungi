@@ -4,6 +4,7 @@ import os
 import json
 import hashlib
 import pandas
+import shutil
 from IPython import embed
 
 ## assumes a query to be a flat dit.
@@ -83,6 +84,17 @@ def fetchBacklinkPages():
 def filterBacklinks(backlinks):
     return [ bl["title"] for bl in backlinks]
 #TODO
+def fetchPageImages(title):
+    images = apiRequest({
+            "action": "query",
+            "format": "json",
+            "prop": "pageimages",
+            "titles": title,
+            "pithumbsize": 200
+    })
+    
+    return images
+
 def fetchPageContent(title):
     page = apiRequest({
             "action": "query",
@@ -96,6 +108,12 @@ def fetchPageContent(title):
     return page
 
 
+def extractImages(result):
+    data = result["query"]["pages"];
+    data = list(data.values())[0]
+    return(data)
+    
+    
 def extractPageContent(result):
     data = result["query"]["pages"]
     data = list(data.values())[0]
@@ -136,7 +154,6 @@ def extractBox(data, boxName):
 
             obj[key] = obj.get(key) or []
             obj[key].append(val)                            
-            print("{}: {}".format(key, val))
 
         except Exception as err:
             print(err)
@@ -145,6 +162,16 @@ def extractBox(data, boxName):
 
     return obj
 
+
+def downloadImage(path, imgUrl):
+    if not os.path.exists(path):
+        r = requests.get(imgUrl, stream=True)
+        if r.status_code == 200:
+            with open(path, 'wb') as f:
+                for chunk in r:
+                    f.write(chunk)
+    else:
+        print("Skipping {}".format(path))
 
 titles = filterBacklinks(fetchBacklinkPages())
 titles.sort()
@@ -159,12 +186,23 @@ for title in titles:
     try:
         count += 1
         result = fetchPageContent(title)
+        images = fetchPageImages(title)
+
         content = extractPageContent(result)
+        images = extractImages(images)
         obj = extractBox(content, "mycomorphbox")
-        obj2 = extractBox(content, "Speciesbox")
+        #obj2 = extractBox(content, "Speciesbox")
 
         if obj != None:
             obj["id"] = count
+            if "thumbnail" in images:
+                hash = hashlib.sha256(title.encode("utf-8"))
+                filename = '../public/images/{}'.format(hash.hexdigest())
+                
+                downloadImage(filename, images["thumbnail"]["source"])
+                obj["image"] = '/images/{}'.format(hash.hexdigest())
+                obj["wikiUrl"] = 'https://en.wikipedia.org/wiki/{}'.format(title.replace(' ', '_'))
+                
             #if obj2 != None and "image" in obj2:
             #    obj["image"] = obj2["image"]
             data.append(obj)
@@ -179,7 +217,7 @@ allkeys = {}
 for row in data:
     print(json.dumps(row))
     for k in list(row.keys()):
-        if k != "name" and k != "id":
+        if k != "name" and k != "id" and k != "image" and k != "wikiUrl":
             allkeys[k] = allkeys.get(k) or {}
             for x in row[k]:
                 allkeys[k][x] = True

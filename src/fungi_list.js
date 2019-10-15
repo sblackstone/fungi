@@ -31,10 +31,12 @@ const FungiItem = (props) => {
   return (
     <div className="fungi-item card">
       <div className="card-header">
+      <a href={props.fungi.wikiUrl}>
         <h5>{props.fungi.name.join("")}</h5>     
+      </a>
       </div>
       <div className="card-body">
-        <img src="./amanita_bisporigera.jpg" />
+        <img src={props.fungi.image} />
         <table>
           <tbody className='card-text'>
             <FungiProps key={fungiPropsKey} fungi={props.fungi} />
