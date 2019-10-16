@@ -19,11 +19,26 @@ const FungiProps = (props) => {
       return null;
     }
     return (
-      <tr key={`${props.fungi.id}:props:${field}`}><th><FieldLabel field={field} /></th><td>{props.fungi[field].join(", ")}</td></tr>
+      <tr key={`${props.fungi.id}:props:${field}`}>
+        <th className='field-label'><FieldLabel field={field} /></th>
+        <td>{props.fungi[field].join(", ")}</td>
+      </tr>
     )
   })
 }
 
+const FungiImage = (props) => {
+  if ("image" in props.fungi) {
+    return (
+      <LazyLoad>
+        <img alt={props.fungi.name} src={props.fungi.image} />
+      </LazyLoad>
+    )
+  } else {
+    return null;
+  }
+
+}
 
 const FungiItem = (props) => {
   const fungiPropsKey = `${props.fungi.id}:props`;
@@ -36,9 +51,7 @@ const FungiItem = (props) => {
       </a>
       </div>
       <div className="card-body">
-        <LazyLoad>
-          <img alt={props.fungi.name} src={props.fungi.image} />
-        </LazyLoad>
+        <FungiImage fungi={props.fungi} />
         <table>
           <tbody className='card-text'>
             <FungiProps key={fungiPropsKey} fungi={props.fungi} />

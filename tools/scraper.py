@@ -92,7 +92,7 @@ def fetchPageImages(title):
             "titles": title,
             "pithumbsize": 200
     })
-    
+
     return images
 
 def fetchPageContent(title):
@@ -112,8 +112,8 @@ def extractImages(result):
     data = result["query"]["pages"];
     data = list(data.values())[0]
     return(data)
-    
-    
+
+
 def extractPageContent(result):
     data = result["query"]["pages"]
     data = list(data.values())[0]
@@ -146,14 +146,14 @@ def extractBox(data, boxName):
                     val = val[0:-2]
 
             if val == "":
-                continue    
+                continue
             if val == "NA":
                 continue
             if val == "unknown":
                 continue
 
             obj[key] = obj.get(key) or []
-            obj[key].append(val)                            
+            obj[key].append(val)
 
         except Exception as err:
             print(err)
@@ -195,14 +195,15 @@ for title in titles:
 
         if obj != None:
             obj["id"] = count
+            obj["wikiUrl"] = 'https://en.wikipedia.org/wiki/{}'.format(title.replace(' ', '_'))
+
             if "thumbnail" in images:
                 hash = hashlib.sha256(title.encode("utf-8"))
                 filename = '../public/images/{}'.format(hash.hexdigest())
-                
+
                 downloadImage(filename, images["thumbnail"]["source"])
                 obj["image"] = '/images/{}'.format(hash.hexdigest())
-                obj["wikiUrl"] = 'https://en.wikipedia.org/wiki/{}'.format(title.replace(' ', '_'))
-                
+
             #if obj2 != None and "image" in obj2:
             #    obj["image"] = obj2["image"]
             data.append(obj)

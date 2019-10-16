@@ -62,13 +62,14 @@ class FungiFilter extends React.Component {
     render() {
       console.log(this.props.filters);
       return (
-        <div>
+        <React.Fragment>
           <div className="form-group">
             <label>Name</label>
-            <input className="form-control form-control-sm" type="text" value={this.state.nameSearch} onChange={this.updateNameSearch.bind(this)} />
-            <FungiFilterFields {...this.props } />
+            <input className="form-control form-control-sm" placeholder="Search by Name" type="text" value={this.state.nameSearch} onChange={this.updateNameSearch.bind(this)} />
           </div>
-        </div>
+          <FungiFilterFields {...this.props } />
+
+        </React.Fragment>
       )
     }
 

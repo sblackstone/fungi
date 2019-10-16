@@ -8,7 +8,7 @@
     max-width: 15vw;
     margin-bottom: 5px;
   }
-  
+
   margin-bottom: 5vh;
 }
 
@@ -17,4 +17,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+}
+
+.field-label {
+  width: 50%;
 }
