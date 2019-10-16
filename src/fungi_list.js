@@ -7,7 +7,7 @@ import LazyLoad from 'react-lazyload';
 
 const FieldLabel = (props) => {
   if (props.field in labelMap) {
-    return (labelMap[props.field]);    
+    return (labelMap[props.field]);
   } else {
     return props.field;
   }
@@ -27,12 +27,12 @@ const FungiProps = (props) => {
 
 const FungiItem = (props) => {
   const fungiPropsKey = `${props.fungi.id}:props`;
-  
+
   return (
     <div className="fungi-item card">
       <div className="card-header">
       <a href={props.fungi.wikiUrl}>
-        <h5>{props.fungi.name.join("")}</h5>     
+        <h5>{props.fungi.name.join("")}</h5>
       </a>
       </div>
       <div className="card-body">
@@ -43,7 +43,7 @@ const FungiItem = (props) => {
           <tbody className='card-text'>
             <FungiProps key={fungiPropsKey} fungi={props.fungi} />
           </tbody>
-        </table> 
+        </table>
       </div>
     </div>
   )
@@ -52,6 +52,14 @@ const FungiItem = (props) => {
 class FungiList extends React.Component {
 
   render() {
+
+    if (this.props.fungi.length === 0) {
+      return(
+          <h6>No Matches</h6>
+
+      )
+    }
+
     return this.props.fungi.map(x => {
       return (
         <FungiItem key={x.id} fungi={x} />

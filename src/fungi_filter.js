@@ -39,13 +39,33 @@ const FungiFilterFields = (props) => {
 }
 
 class FungiFilter extends React.Component {
+
+   constructor(props) {
+     super(props);
+     this.state = {
+       nameSearch: ""
+     }
+   }
+
+   updateNameSearch(e) {
+     this.setState({
+       nameSearch: e.target.value
+     });
+
+     clearTimeout(this.searchTimer);
+     this.searchTimer = setTimeout(()=> {
+       this.props.updateFilterSettings("nameSearch", this.state.nameSearch);
+     }, 25);
+
+   }
+
     render() {
       console.log(this.props.filters);
       return (
         <div>
           <div className="form-group">
             <label>Name</label>
-            <input className="form-control form-control-sm" type="text" value={this.props.filters.nameSearch} onChange={(e) => this.props.updateFilterSettings("nameSearch", e.target.value)} />
+            <input className="form-control form-control-sm" type="text" value={this.state.nameSearch} onChange={this.updateNameSearch.bind(this)} />
             <FungiFilterFields {...this.props } />
           </div>
         </div>

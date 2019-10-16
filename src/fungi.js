@@ -23,27 +23,24 @@ class Fungi extends React.Component {
     console.log(this.initialState);
   }
 
-  updateFilterSettings(filter, value) {
-    console.log("updateFilterSettings");
-    let newFilters = Object.assign({}, this.state.filters);
-    newFilters[filter] = value
-    
-    const newVisibleFungi = fungi.fungi.filter(f => {
-      for (let i = 0; i < this.filterTypes.length; i++) {
-        const ft = this.filterTypes[i];
-        const fv = newFilters[ft];
 
-        if (ft === '') {
-          continue;
-        }
+  generateVisibleFungi(filters) {
+    const activeFilters = Object.keys(filters).filter(x => x !== '' && filters[x] !== '');
+    console.log(activeFilters);
+    let re = null;
+    if (filters["nameSearch"] !== '') {
+      re = new RegExp(`.*${filters["nameSearch"]}`,"i");
+      console.log(re);
+    }
 
-        if (fv === '') {
-          continue;
-        }
-        
-        
+    return fungi.fungi.filter(f => {
+      for (let i = 0; i < activeFilters.length; i++) {
+        const ft = activeFilters[i];
+        const fv = filters[ft];
+
         if (ft === "nameSearch") {
-          if (!(f.name[0].match(fv))) {
+
+          if (!(re.test(f.name[0]))) {
             return false;
           } else {
             continue;
@@ -54,20 +51,28 @@ class Fungi extends React.Component {
           return false;
         }
 
-
-        
         if (f[ft].indexOf(fv) === -1) {
           return false;
-        }            
-        
+        }
+
       }
       return true;
     });
 
-    this.setState({
-      filters: newFilters,
-      visibleFungi: newVisibleFungi
-    })
+  }
+
+  updateFilterSettings(filter, value) {
+    console.log("updateFilterSettings");
+    let newFilters = Object.assign({}, this.state.filters);
+    newFilters[filter] = value
+
+    const newState = {
+      filters: newFilters
+    };
+
+    newState["visibleFungi"] = this.generateVisibleFungi(newFilters);
+
+    this.setState(newState)
 
     setTimeout(forceCheck, 25);
 
