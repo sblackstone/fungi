@@ -20,8 +20,8 @@ class CdkStack extends cdk.Stack {
     this.importLambda = new lambda.Function(this, 'importLambda', {
       runtime: lambda.Runtime.PYTHON_3_6,
       code: lambda.Code.asset('lambda/importLambda'),
-      handler: 'importLambda.lambda_handler',
-      timeout: cdk.Duration.seconds(30),
+      handler: 'importLambda.importLambda',
+      timeout: cdk.Duration.seconds(900),
       //layers: [ this.depLayer],
     });
   
