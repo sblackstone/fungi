@@ -23,9 +23,15 @@ def queryToCacheKey(query):
 
 def fetchCachedRequest(hash):
     try:
-        contents = s3.get(BUCKET_NAME, hash)
+        object = s3.Object(BUCKET_NAME, hash)
+
+        contents = object.get()['Body'].read().decode('utf-8')
+        print("CACHE HIT!")
+        print(contents)
         return json.loads(contents)
     except Exception as e: # TODO: FIXME
+        print("CACHE MISS")
+        print(e)
         return None
 
 def writeCache(hash, data):
@@ -121,7 +127,7 @@ def extractPageContent(result):
 def extractBox(data, boxName):
     regEx = '{{' + boxName + '[^\}]*'
     reg = re.compile(regEx, re.MULTILINE | re.IGNORECASE)
-    rawBox = reg.findall(content)
+    rawBox = reg.findall(data)
     if len(rawBox) == 0:
         print("Box not found: {}".format(title))
         return None
