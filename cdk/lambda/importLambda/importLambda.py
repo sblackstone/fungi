@@ -207,7 +207,7 @@ def importLambda(event, context):
 
     ##### THIS LIMITS IT TO FIRST 3!
     count = 0
-    for title in titles:
+    for title in titles[:5]:
         #if title != 'Lepiota brunneoincarnata':
         #    continue
         # print(title)
