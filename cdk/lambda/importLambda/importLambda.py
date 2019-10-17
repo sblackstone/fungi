@@ -7,6 +7,9 @@ import boto3
 
 s3 = boto3.resource('s3')
 
+BUCKET_NAME = os.environ["S3_BUCKET"]
+
+
 ## assumes a query to be a flat dit.
 def queryToCacheKey(query):
     result = ""
@@ -15,20 +18,24 @@ def queryToCacheKey(query):
     for k in keys:
         result += "{}|{}|".format(k,query[k])
     hash = hashlib.sha256(result.encode("utf-8"))
-    return hash.hexdigest()
-
+    h = hash.hexdigest()
+    return h[:16]
 
 def fetchCachedRequest(hash):
     try:
-        contents = s3.get('cacheBucket', hash)
+        contents = s3.get(BUCKET_NAME, hash)
         return json.loads(contents)
-    except botocore.exceptions.ClientError as e:
+    except Exception as e: # TODO: FIXME
         return None
 
 def writeCache(hash, data):
-    cachePath = cachePathForHash(hash)
-    f = open(cachePath, 'w')
-    f.write(json.dumps(data))
+    print("HASH = {}".format(hash))
+    object = s3.Object(BUCKET_NAME, hash)
+    object.put(Body=json.dumps(data).encode())
+
+def writeFungiJson(data):
+    object = s3.Object(BUCKET_NAME, "fungi.json")
+    object.put(Body=json.dumps(data).encode())
 
 def apiRequest(params):
     key = queryToCacheKey(params)
@@ -167,16 +174,19 @@ def downloadImage(path, imgUrl):
 
 def importLambda(event, context):
     print("Hello there!")
+    print(BUCKET_NAME)
+    print(BUCKET_NAME)
+    print(BUCKET_NAME)
+    print(BUCKET_NAME)
 
     titles = filterBacklinks(fetchBacklinkPages())
     titles.sort()
 
-    os.exit(0)
     data = []
 
     ##### THIS LIMITS IT TO FIRST 3!
     count = 0
-    for title in titles:
+    for title in titles[:3]:
         #if title != 'Lepiota brunneoincarnata':
         #    continue
         # print(title)
@@ -235,8 +245,6 @@ def importLambda(event, context):
       "meta": meta
     }
 
-    f = open("../src/fungi.json", "w")
-    f.write(json.dumps(result))
-    f.close()
+    writeFungiJson(result)
 
     print("Found {} pages".format(count))

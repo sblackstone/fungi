@@ -32,6 +32,9 @@ class CdkStack extends cdk.Stack {
       handler: 'importLambda.importLambda',
       timeout: cdk.Duration.seconds(900),
       layers: [ this.depLayer],
+      environment: {
+        S3_BUCKET: this.bucket.bucketName
+      }
     });
 
     this.bucket.grantReadWrite(this.importLambda)
@@ -42,8 +45,8 @@ class CdkStack extends cdk.Stack {
 
   constructor(scope, id, props) {
     super(scope, id, props);
-    this.createBucket();
     this.addDepLayer();
+    this.createBucket();
     this.createLambda();
 
 
