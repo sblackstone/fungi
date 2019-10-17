@@ -231,7 +231,7 @@ def importLambda(event, context):
                     filename = filename[:16]
 
                     downloadImage(filename, images["thumbnail"]["source"])
-                    obj["image"] = '/images/{}'.format(hash.hexdigest())
+                    obj["image"] = filename
 
                 #if obj2 != None and "image" in obj2:
                 #    obj["image"] = obj2["image"]
