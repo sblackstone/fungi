@@ -31,7 +31,7 @@ const FungiImage = (props) => {
   if ("image" in props.fungi) {
     return (
       <LazyLoad>
-        <img alt={props.fungi.name} src={props.fungi.image} />
+        <img alt={props.fungi.name} src={"https://cdkstack-fungibucket822f5406-156dgl69y3n56.s3.amazonaws.com/" + props.fungi.image} />
       </LazyLoad>
     )
   } else {
