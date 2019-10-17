@@ -168,6 +168,21 @@ def extractBox(data, boxName):
 
 
 def downloadImage(path, imgUrl):
+    try:
+        print(path)
+        print(imgUrl)
+        object = s3.Object(BUCKET_NAME, path).load()
+        print("Image Already exists: {}".format(path))
+    except Exception as err:
+        r = requests.get(imgUrl, stream=False)
+        if r.status_code == 200:
+            print("WRITING IMAGE")
+            object = s3.Object(BUCKET_NAME, path)
+            object.put(Body=r.content)
+        else:
+            print(r.status_code)
+
+"""    
     if not os.path.exists(path):
         r = requests.get(imgUrl, stream=True)
         if r.status_code == 200:
@@ -176,7 +191,7 @@ def downloadImage(path, imgUrl):
                     f.write(chunk)
     else:
         print("Skipping {}".format(path))
-
+"""
 
 def importLambda(event, context):
     print("Hello there!")
@@ -192,7 +207,7 @@ def importLambda(event, context):
 
     ##### THIS LIMITS IT TO FIRST 3!
     count = 0
-    for title in titles[:3]:
+    for title in titles:
         #if title != 'Lepiota brunneoincarnata':
         #    continue
         # print(title)
@@ -212,7 +227,7 @@ def importLambda(event, context):
 
                 if "thumbnail" in images:
                     hash = hashlib.sha256(title.encode("utf-8"))
-                    filename = '../public/images/{}'.format(hash.hexdigest())
+                    filename = hash.hexdigest()
 
                     downloadImage(filename, images["thumbnail"]["source"])
                     obj["image"] = '/images/{}'.format(hash.hexdigest())
