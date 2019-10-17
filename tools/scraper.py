@@ -3,8 +3,6 @@ import re
 import os
 import json
 import hashlib
-import pandas
-import shutil
 from IPython import embed
 
 ## assumes a query to be a flat dit.
