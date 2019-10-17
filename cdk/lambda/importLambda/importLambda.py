@@ -37,11 +37,11 @@ def fetchCachedRequest(hash):
 def writeCache(hash, data):
     print("HASH = {}".format(hash))
     object = s3.Object(BUCKET_NAME, hash)
-    object.put(Body=json.dumps(data).encode())
+    object.put(Body=json.dumps(data).encode(),ACL="authenticated-read")
 
 def writeFungiJson(data):
     object = s3.Object(BUCKET_NAME, "fungi.json")
-    object.put(Body=json.dumps(data).encode())
+    object.put(Body=json.dumps(data).encode(),ACL="public-read",ContentType="application/json")
 
 def apiRequest(params):
     key = queryToCacheKey(params)
@@ -178,7 +178,7 @@ def downloadImage(path, imgUrl):
         if r.status_code == 200:
             print("WRITING IMAGE")
             object = s3.Object(BUCKET_NAME, path)
-            object.put(Body=r.content)
+            object.put(Body=r.content,ACL="public-read")
         else:
             print(r.status_code)
 
