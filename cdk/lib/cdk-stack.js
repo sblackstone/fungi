@@ -31,7 +31,7 @@ class CdkStack extends cdk.Stack {
       code: lambda.Code.asset('lambda/importLambda'),
       handler: 'importLambda.importLambda',
       timeout: cdk.Duration.seconds(900),
-      //layers: [ this.depLayer],
+      layers: [ this.depLayer],
     });
 
     this.bucket.grantReadWrite(this.importLambda)
@@ -43,8 +43,8 @@ class CdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
     this.createBucket();
-    this.createLambda();
     this.addDepLayer();
+    this.createLambda();
 
 
 
