@@ -228,6 +228,7 @@ def importLambda(event, context):
                 if "thumbnail" in images:
                     hash = hashlib.sha256(title.encode("utf-8"))
                     filename = hash.hexdigest()
+                    filename = filename[:16]
 
                     downloadImage(filename, images["thumbnail"]["source"])
                     obj["image"] = '/images/{}'.format(hash.hexdigest())
