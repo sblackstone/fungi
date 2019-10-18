@@ -11,23 +11,25 @@ class Fungi extends React.Component {
     this.initialState = {
       visibleFungi: [],
       fungi: [],
+      fungiMeta: {
+        attributes: {}
+      },
       filters: {
       }
     };
 
     this.state = Object.assign({}, this.initialState);
-    console.log(this.initialState);
   }
 
   async componentDidMount() {
     const fungi = await getFungi();
     window.fungi = fungi;
-    console.log(fungi);
     Object.keys(fungi.meta.attributes).forEach(ft => this.initialState.filters[ft] = "");
+    this.initialState.filters["nameSearch"] = "";
 
     this.initialState.fungi        = fungi.fungi.slice(0);
+    this.initialState.fungiMeta    = Object.assign({}, fungi.meta);
     this.initialState.visibleFungi = fungi.fungi.slice(0);
-
     this.setState(this.initialState);
 
 
@@ -35,15 +37,19 @@ class Fungi extends React.Component {
 
   generateVisibleFungi(filters) {
     const activeFilters = Object.keys(filters).filter(x => x !== '' && filters[x] !== '');
+    console.log(`activeFilters`);
+    console.log(activeFilters);
     let re = null;
     if (filters["nameSearch"] !== '') {
       re = new RegExp(`.*${filters["nameSearch"]}`,"i");
     }
 
     return this.state.fungi.filter(f => {
+      console.log(f);
       for (let i = 0; i < activeFilters.length; i++) {
         const ft = activeFilters[i];
         const fv = filters[ft];
+        console.log(`${i} ${ft} ${fv}`);
 
         if (ft === "nameSearch") {
 
@@ -55,10 +61,12 @@ class Fungi extends React.Component {
         };
 
         if (!(ft in f)) {
+          console.log("ft not in f");
           return false;
         }
 
         if (f[ft].indexOf(fv) === -1) {
+          console.log("indexOf(fv) === -1");
           return false;
         }
 
@@ -70,6 +78,7 @@ class Fungi extends React.Component {
 
   updateFilterSettings(filter, value) {
     console.log("updateFilterSettings");
+    console.log(`${filter} ${value}`);
     let newFilters = Object.assign({}, this.state.filters);
     newFilters[filter] = value
 
@@ -96,7 +105,7 @@ class Fungi extends React.Component {
         <div className="left-col">
           <div className="card">
             <div className="card-body">
-              <FungiFilter updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
+              <FungiFilter fungiMeta={this.state.fungiMeta} updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
               <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
               <div>
               <h6>{this.state.visibleFungi.length} Matches</h6>
@@ -106,7 +115,7 @@ class Fungi extends React.Component {
         </div>
         <div className="right-col">
           <div className="fungi-list-container">
-            <FungiList fungi={this.state.visibleFungi} />
+            <FungiList fungiMeta={this.state.fungiMeta} fungi={this.state.visibleFungi} />
           </div>
         </div>
       </div>

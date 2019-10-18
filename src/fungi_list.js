@@ -1,6 +1,5 @@
 import React from 'react';
 import './fungi_list.scss';
-import fungi from './fungi.json';
 import { labelMap } from './constants.js';
 import LazyLoad from 'react-lazyload';
 
@@ -14,7 +13,7 @@ const FieldLabel = (props) => {
 }
 
 const FungiProps = (props) => {
-  return Object.keys(fungi.meta.attributes).map(field => {
+  return Object.keys(props.fungiMeta.attributes).map(field => {
     if (!(field in props.fungi)) {
       return null;
     }
@@ -54,7 +53,7 @@ const FungiItem = (props) => {
         <FungiImage fungi={props.fungi} />
         <table>
           <tbody className='card-text'>
-            <FungiProps key={fungiPropsKey} fungi={props.fungi} />
+            <FungiProps fungiMeta={props.fungiMeta} key={fungiPropsKey} fungi={props.fungi} />
           </tbody>
         </table>
       </div>
@@ -75,7 +74,7 @@ class FungiList extends React.Component {
 
     return this.props.fungi.map(x => {
       return (
-        <FungiItem key={x.id} fungi={x} />
+        <FungiItem fungiMeta={this.props.fungiMeta} key={x.id} fungi={x} />
       )
     })
   }
