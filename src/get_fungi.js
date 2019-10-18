@@ -6,9 +6,9 @@ let fungiCache = null;
 export async function getFungi() {
   if (fungiCache === null) {
     fungiCache = await request("https://cdkstack-fungibucket822f5406-156dgl69y3n56.s3.amazonaws.com/fungi.json");
+    fungiCache = JSON.parse(fungiCache);
   }
-  return(fungiCache);
+  return fungiCache;
 }
-
 
 export default getFungi;
