@@ -21,7 +21,11 @@ class CdkStack extends cdk.Stack {
   createBucket() {
     this.bucket = new s3.Bucket(this, 'fungiBucket', {
       versioned: false,
-      removalPolicy: cdk.RemovalPolicy.RETAIN
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      cors: [{
+        allowedMethods: ["GET"],
+        allowedOrigins: ["*"]
+      }],
     });
   }
 
