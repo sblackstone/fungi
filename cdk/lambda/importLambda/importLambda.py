@@ -182,7 +182,7 @@ def downloadImage(path, imgUrl):
         else:
             print(r.status_code)
 
-"""    
+"""
     if not os.path.exists(path):
         r = requests.get(imgUrl, stream=True)
         if r.status_code == 200:
@@ -207,15 +207,11 @@ def importLambda(event, context):
 
     ##### THIS LIMITS IT TO FIRST 3!
     count = 0
-    for title in titles[:5]:
-        #if title != 'Lepiota brunneoincarnata':
-        #    continue
-        # print(title)
+    for title in titles:
         try:
             count += 1
             result = fetchPageContent(title)
             images = fetchPageImages(title)
-
             content = extractPageContent(result)
             images = extractImages(images)
             obj = extractBox(content, "mycomorphbox")
