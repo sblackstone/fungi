@@ -1,39 +1,46 @@
 import React from 'react';
 import FungiList from './fungi_list';
 import FungiFilter from './fungi_filter';
-import fungi from './fungi.json';
 import { forceCheck } from 'react-lazyload';
+import { getFungi } from './get_fungi';
+
 class Fungi extends React.Component {
   constructor(props) {
     super(props);
-    window.crap = this;
 
     this.initialState = {
-      visibleFungi: fungi.fungi.slice(0),
+      visibleFungi: [],
+      fungi: [],
       filters: {
       }
     };
 
-
-
-    this.filterTypes = Object.keys(fungi.meta.attributes);
-    this.filterTypes.push("nameSearch");
-    this.filterTypes.forEach(ft => this.initialState.filters[ft] = "");
     this.state = Object.assign({}, this.initialState);
     console.log(this.initialState);
   }
 
+  async componentDidMount() {
+    const fungi = await getFungi();
+    window.fungi = fungi;
+    console.log(fungi);
+    Object.keys(fungi.meta.attributes).forEach(ft => this.initialState.filters[ft] = "");
+
+    this.initialState.fungi        = fungi.fungi.slice(0);
+    this.initialState.visibleFungi = fungi.fungi.slice(0);
+
+    this.setState(this.initialState);
+
+
+  }
 
   generateVisibleFungi(filters) {
     const activeFilters = Object.keys(filters).filter(x => x !== '' && filters[x] !== '');
-    console.log(activeFilters);
     let re = null;
     if (filters["nameSearch"] !== '') {
       re = new RegExp(`.*${filters["nameSearch"]}`,"i");
-      console.log(re);
     }
 
-    return fungi.fungi.filter(f => {
+    return this.state.fungi.filter(f => {
       for (let i = 0; i < activeFilters.length; i++) {
         const ft = activeFilters[i];
         const fv = filters[ft];
@@ -80,10 +87,7 @@ class Fungi extends React.Component {
 
   resetFilters(e) {
     console.log("Reset filters");
-    const newState = Object.assign({}, this.state);
-    newState.filters =  Object.assign({}, this.initialState.filters);
-    newState.visibleFungi = fungi.fungi.slice(0);
-    this.setState(newState)
+    this.setState(Object.assign({}, this.initialState));
   }
 
   render() {
