@@ -1,5 +1,6 @@
 const cdk = require('@aws-cdk/core');
 const s3  = require('@aws-cdk/aws-s3');
+const s3deploy = require('@aws-cdk/aws-s3-deployment');
 const lambda = require("@aws-cdk/aws-lambda");
 
 class CdkStack extends cdk.Stack {
@@ -18,6 +19,19 @@ class CdkStack extends cdk.Stack {
    });
 
   }
+
+  createWebsite() {
+    const websiteBucket = new s3.Bucket(this, 'Website', {
+      websiteIndexDocument: 'index.html',
+      publicReadAccess: true
+    });
+
+    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
+      sources: [s3deploy.Source.asset('../build')],
+      destinationBucket: websiteBucket,
+      //destinationKeyPrefix: 'web/static' // optional prefix in destination bucket
+    });  }
+
   createBucket() {
     this.bucket = new s3.Bucket(this, 'fungiBucket', {
       versioned: false,
@@ -52,6 +66,7 @@ class CdkStack extends cdk.Stack {
     this.addDepLayer();
     this.createBucket();
     this.createLambda();
+    this.createWebsite();
 
 
 
