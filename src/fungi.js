@@ -9,6 +9,7 @@ class Fungi extends React.Component {
     super(props);
 
     this.initialState = {
+      ready: false,
       visibleFungi: [],
       fungi: [],
       fungiMeta: {
@@ -26,7 +27,7 @@ class Fungi extends React.Component {
     window.fungi = fungi;
     Object.keys(fungi.meta.attributes).forEach(ft => this.initialState.filters[ft] = "");
     this.initialState.filters["nameSearch"] = "";
-
+    this.initialState.ready = true;
     this.initialState.fungi        = fungi.fungi.slice(0);
     this.initialState.fungiMeta    = Object.assign({}, fungi.meta);
     this.initialState.visibleFungi = fungi.fungi.slice(0);
@@ -100,6 +101,9 @@ class Fungi extends React.Component {
   }
 
   render() {
+    if (!(this.state.ready)) {
+      return null;
+    }
     return(
       <div className="row">
         <div className="left-col">
