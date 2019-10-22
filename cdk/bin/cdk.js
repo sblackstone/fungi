@@ -6,4 +6,9 @@ const cdk = require('@aws-cdk/core');
 const { CdkStack } = require('../lib/cdk-stack');
 
 const app = new cdk.App();
-new CdkStack(app, 'CdkStack');
+new CdkStack(app, 'CdkStack', {
+  env: {
+    account: "037501505642",
+    region: "us-east-1"
+  }
+});

@@ -3,6 +3,9 @@ const s3  = require('@aws-cdk/aws-s3');
 const s3deploy = require('@aws-cdk/aws-s3-deployment');
 const lambda = require("@aws-cdk/aws-lambda");
 const cloudfront = require("@aws-cdk/aws-cloudfront");
+const route53 = require('@aws-cdk/aws-route53');
+const targets = require('@aws-cdk/aws-route53-targets');
+const certmgr = require('@aws-cdk/aws-certificatemanager');
 
 class CdkStack extends cdk.Stack {
   /**
@@ -30,7 +33,11 @@ class CdkStack extends cdk.Stack {
                 },
                 behaviors : [ {isDefaultBehavior: true}]
             }
-        ]
+        ],
+        aliasConfiguration: {
+          names: ["fungius.com"],
+          acmCertRef: this.certificate.certificateArn
+        }
      });
   }
 
@@ -71,9 +78,35 @@ class CdkStack extends cdk.Stack {
 
     this.bucket.grantReadWrite(this.importLambda)
 
+  }
+  
+  createZone() {
+    this.zone = route53.HostedZone.fromHostedZoneAttributes(this, 'importedZoneCert', {
+      zoneName: 'fungius.com',
+      hostedZoneId: 'Z18HX7RPFFTK0A'
+    });    
+  }
+
+
+  linkZoneToCloudFront() {
+    new route53.AaaaRecord(this, 'ipv6', {
+      zone: this.zone,
+      target: route53.AddressRecordTarget.fromAlias(new targets.CloudFrontTarget(this.distribution))
+    });
+    new route53.ARecord(this, 'ipv4', {
+      zone: this.zone,
+      target: route53.AddressRecordTarget.fromAlias(new targets.CloudFrontTarget(this.distribution))
+    });
+
 
   }
 
+  createCert() {
+    this.certificate = new certmgr.DnsValidatedCertificate(this, 'TestCertificate', {
+        domainName: 'fungius.com',
+        hostedZone: this.zone
+    });
+  }
 
   constructor(scope, id, props) {
     super(scope, id, props);
@@ -81,8 +114,10 @@ class CdkStack extends cdk.Stack {
     this.createBucket();
     this.createLambda();
     this.createWebsite();
+    this.createZone();
+    this.createCert();
     this.createCdn();
-
+    this.linkZoneToCloudFront();
 
 
     // The code that defines your stack goes here

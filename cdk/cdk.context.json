@@ -1,0 +1,22 @@
+{
+  "hosted-zone:account=037501505642:domainName=fungious.com:region=us-east-1": {
+    "Id": "/hostedzone/Z2EN34NLG0WTVX",
+    "Name": "fungious.com."
+  },
+  "hosted-zone:account=037501505642:domainName=fungius.com:region=us-east-1": {
+    "Id": "/hostedzone/Z18HX7RPFFTK0A",
+    "Name": "fungius.com."
+  },
+  "hosted-zone:account=037501505642:domainName=fungius.com.:region=us-east-1": {
+    "Id": "/hostedzone/Z18HX7RPFFTK0A",
+    "Name": "fungius.com."
+  },
+  "hosted-zone:account=037501505642:domainName=fungius.com.:hostedZoneId=Z18HX7RPFFTK0A:region=us-east-1": {
+    "Id": "/hostedzone/Z18HX7RPFFTK0A",
+    "Name": "fungius.com."
+  },
+  "hosted-zone:account=037501505642:domainName=fungius.com.:privateZone=false:region=us-east-1": {
+    "Id": "/hostedzone/Z18HX7RPFFTK0A",
+    "Name": "fungius.com."
+  }
+}
