@@ -35,8 +35,15 @@ code {
   padding-top: 10px;
   padding-left: 15px;
   position: fixed;
+  display: flex;
+  width: calc(95vw - 15px);
   z-index: 1000;
-  font-family: 'Mogra', cursive;
+  justify-content: space-between;
+  align-items: baseline;
+  h1 {
+    font-family: 'Mogra', cursive;
+    display: inline-block;
+  }
 }
 
 .main {

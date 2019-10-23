@@ -9,6 +9,10 @@ function PageHeader(props) {
   return (
     <div className="page-header">
       <h1>Fungius</h1>
+
+      <div className="fb-share-button pull-right" data-href="https://fungius.com/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffungius.com%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
+
+
     </div>
   )
 }
@@ -47,19 +51,15 @@ class Fungi extends React.Component {
 
   generateVisibleFungi(filters) {
     const activeFilters = Object.keys(filters).filter(x => x !== '' && filters[x] !== '');
-    console.log(`activeFilters`);
-    console.log(activeFilters);
     let re = null;
     if (filters["nameSearch"] !== '') {
       re = new RegExp(`.*${filters["nameSearch"]}`,"i");
     }
 
     return this.state.fungi.filter(f => {
-      console.log(f);
       for (let i = 0; i < activeFilters.length; i++) {
         const ft = activeFilters[i];
         const fv = filters[ft];
-        console.log(`${i} ${ft} ${fv}`);
 
         if (ft === "nameSearch") {
 
@@ -71,12 +71,12 @@ class Fungi extends React.Component {
         };
 
         if (!(ft in f)) {
-          console.log("ft not in f");
+          //console.log("ft not in f");
           return false;
         }
 
         if (f[ft].indexOf(fv) === -1) {
-          console.log("indexOf(fv) === -1");
+          //console.log("indexOf(fv) === -1");
           return false;
         }
 
@@ -87,8 +87,8 @@ class Fungi extends React.Component {
   }
 
   updateFilterSettings(filter, value) {
-    console.log("updateFilterSettings");
-    console.log(`${filter} ${value}`);
+    //console.log("updateFilterSettings");
+    //console.log(`${filter} ${value}`);
     let newFilters = Object.assign({}, this.state.filters);
     newFilters[filter] = value
 
@@ -105,7 +105,6 @@ class Fungi extends React.Component {
   }
 
   resetFilters(e) {
-    console.log("Reset filters");
     this.setState(Object.assign({}, this.initialState));
   }
 

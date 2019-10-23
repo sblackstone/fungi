@@ -1,6 +1,5 @@
 import React from 'react';
 import { labelMap } from './constants.js';
-import { forceCheck } from 'react-lazyload';
 
 const SelectOptions = (props) => {
 
@@ -54,14 +53,11 @@ class FungiFilter extends React.Component {
      clearTimeout(this.searchTimer);
      this.searchTimer = setTimeout(()=> {
        this.props.updateFilterSettings("nameSearch", this.state.nameSearch);
-     }, 25);
+     }, 75);
 
    }
 
     render() {
-      console.log("FFF");
-      console.log(this.props);
-      console.log(this.props.filters);
       return (
         <React.Fragment>
           <div className="form-group">

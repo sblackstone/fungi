@@ -45,7 +45,7 @@ const FungiItem = (props) => {
   return (
     <div className="fungi-item card">
       <div className="card-header">
-      <a href={props.fungi.wikiUrl}>
+      <a href={props.fungi.wikiUrl} rel="noopener noreferrer">
         <h5>{props.fungi.name.join("")}</h5>
       </a>
       </div>
