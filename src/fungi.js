@@ -8,7 +8,7 @@ import { getFungi } from './get_fungi';
 function PageHeader(props) {
   return (
     <div className="page-header">
-      <h1>Fungius: The Fast Fungi Finder</h1>
+      <h1>Fungius</h1>
     </div>
   )
 }
