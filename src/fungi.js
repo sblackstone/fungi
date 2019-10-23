@@ -4,6 +4,15 @@ import FungiFilter from './fungi_filter';
 import { forceCheck } from 'react-lazyload';
 import { getFungi } from './get_fungi';
 
+
+function PageHeader(props) {
+  return (
+    <div className="page-header">
+      <h1>Fungius: The Fast Fungi Finder</h1>
+    </div>
+  )
+}
+
 class Fungi extends React.Component {
   constructor(props) {
     super(props);
@@ -105,25 +114,27 @@ class Fungi extends React.Component {
       return null;
     }
     return(
-      <div className="row">
-        <div className="left-col">
-          <div className="card">
-            <div className="card-body">
-              <FungiFilter fungiMeta={this.state.fungiMeta} updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
-              <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
-              <div>
-              <h6>{this.state.visibleFungi.length} Matches</h6>
+      <div>
+        <PageHeader />
+        <div className="row main">
+          <div className="left-col">
+            <div className="card">
+              <div className="card-body">
+                <FungiFilter fungiMeta={this.state.fungiMeta} updateFilterSettings={this.updateFilterSettings.bind(this)} filters={this.state.filters} />
+                <button className="btn btn-sm btn-primary float-right" onClick={this.resetFilters.bind(this)}>Reset</button>
+                <div>
+                <h6>{this.state.visibleFungi.length} Matches</h6>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="right-col">
-          <div className="fungi-list-container">
-            <FungiList fungiMeta={this.state.fungiMeta} fungi={this.state.visibleFungi} />
+          <div className="right-col">
+            <div className="fungi-list-container">
+              <FungiList fungiMeta={this.state.fungiMeta} fungi={this.state.visibleFungi} />
+            </div>
           </div>
         </div>
       </div>
-
     )
   }
 
