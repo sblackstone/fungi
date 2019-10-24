@@ -57,6 +57,14 @@ const FungiItem = (props) => {
           </tbody>
         </table>
       </div>
+      <div className="card-footer">
+        <div className="btn-group">
+        <a className='btn btn-primary btn-sm' rel="noopener noreferrer" target="_blank" href={`https://www.google.com/search?q=${props.fungi.name.join("")}&tbm=isch`}>Search Images</a>
+        <a className='btn btn-primary btn-sm' rel="noopener noreferrer" target="_blank" href={`https://mushroomobserver.org/observer/observation_search?pattern=${props.fungi.name.join("")}`}>Search MO</a>
+        </div>
+  
+    
+      </div>
     </div>
   )
 };
