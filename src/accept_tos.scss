@@ -1,0 +1,21 @@
+.accept-tos-container {
+  display: flex;
+  justify-content: space-around;
+
+  .card {
+    margin-top: 25vh;
+    max-width: 550px;
+    img {
+      height: 150px;
+      float: right;
+      margin-right: 20px;
+    }
+    
+  }
+  
+  .card-footer {
+    text-align: center;
+  }
+  
+}
+
