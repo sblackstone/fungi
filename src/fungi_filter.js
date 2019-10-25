@@ -16,7 +16,7 @@ const FilterField = (props) => {
       label = labelMap[label];
     }
     return (
-      <div className="form-group">
+      <div className="form-group col col-xs-6">
         <label>{label}</label>
         <select className="form-control form-control-sm" value={props.filters[props.field]} onChange={(e) => props.updateFilterSettings(props.field, e.target.value)}>
           <option value="">Any</option>
