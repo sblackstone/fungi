@@ -8,7 +8,6 @@ import { getFungi } from './get_fungi';
 function PageHeader(props) {
   return (
     <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-      <a className="navbar-brand" href="#">Fungius</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -17,10 +16,6 @@ function PageHeader(props) {
           <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
         </form>
         <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-        <h6>{props.visibleFungiCount} Matches</h6>
-
-        </li>
         <li className="nav-item">
           <button className="btn btn-sm btn-primary " onClick={props.resetFilters}>Reset</button>
         </li>
@@ -132,6 +127,10 @@ class Fungi extends React.Component {
     return(
       <React.Fragment>
         <PageHeader resetFilters={this.resetFilters.bind(this)} visibleFungiCount={this.state.visibleFungiCount} fungiMeta={this.state.fungiMeta} fungi={this.state.fungi} filters={this.state} updateFilterSettings={this.updateFilterSettings.bind(this)} />
+        <div>
+          <h6>{this.state.visibleFungiCount} Matches</h6>
+        </div>
+
         <div className="fungi-list-container">
           <FungiList fungiMeta={this.state.fungiMeta} fungi={this.state.visibleFungi} />
         </div>
