@@ -15,13 +15,14 @@ function PageHeader(props) {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <form className="row">
           <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
-          <div className="col col-xs-2">
-            <button className="btn btn-sm btn-primary " onClick={props.resetFilters}>Reset</button>
-          </div>
-          <div className="col col-xs-2">
-            <h6>{props.visibleFungiCount} Matches</h6>
-          </div>
         </form>
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <a className="nav-link" onClick={props.resetFilters}>Reset</a>
+          </li>
+
+
+        </ul>
       </div>
     </nav>
   )
@@ -130,7 +131,7 @@ class Fungi extends React.Component {
       <React.Fragment>
       <div className="container-fluid">
         <PageHeader resetFilters={this.resetFilters.bind(this)} visibleFungiCount={this.state.visibleFungiCount} fungiMeta={this.state.fungiMeta} fungi={this.state.fungi} filters={this.state} updateFilterSettings={this.updateFilterSettings.bind(this)} />
-
+        <h6 style={{"margin-left": "35px", "margin-top": "5px"}}>Showing {this.state.visibleFungiCount} Matches</h6>
         <div className="fungi-list-container">
           <FungiList fungiMeta={this.state.fungiMeta} fungi={this.state.visibleFungi} />
         </div>
