@@ -1,10 +1,10 @@
 export const labelMap = {
   "name": "Name",
-  "whichGills": "Gill Type",
-  "capShape": "Cap Shape",
+  "whichGills": "Gills",
+  "capShape": "Cap",
   "hymeniumType": "Hymenium",
   "stipeCharacter": "Stipe",
   "ecologicalType": "Ecology",
-  "sporePrintColor": "Spore Color",
+  "sporePrintColor": "Spores",
   "howEdible": "Edibility"
 };

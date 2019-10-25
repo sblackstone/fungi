@@ -1,7 +1,6 @@
 import React from 'react';
 import Fungi from './fungi';
 import './bootstrap.min.css';
-import './App.css';
 import { default as storage } from 'local-storage';
 import AcceptTos from './accept_tos';
 
@@ -9,7 +8,7 @@ import AcceptTos from './accept_tos';
 // storage.set('tos-accepted', false);
 
 class App extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,8 +30,8 @@ class App extends React.Component {
     } else {
       return <AcceptTos onAcceptTos={this.onAcceptTos.bind(this)} />;
     }
-    
-  }  
+
+  }
 }
 
 export default App;
