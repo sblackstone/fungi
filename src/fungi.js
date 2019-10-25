@@ -7,47 +7,27 @@ import { getFungi } from './get_fungi';
 
 function PageHeader(props) {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Fungius</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Fungius</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="navbar-form form-inline my-2 my-lg-0">
+          <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
+        </form>
+        <ul class="navbar-nav mr-auto">
+        <li claaName="nav-item">
+        <h6>{props.visibleFungiCount} Matches</h6>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-{/*
-    <ul class="navbar-nav mr-auto">
+        </li>
+        <li class="nav-item">
+          <button className="btn btn-sm btn-primary " onClick={props.resetFilters}>Reset</button>
+        </li>
 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-    </ul>
-*/}
-    <form class="form-inline my-2 my-lg-0">
-      <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
-    </form>
-    <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-    <button className="btn btn-sm btn-primary " onClick={props.resetFilters}>Reset</button>
-    </li>
-
-    </ul>
-  </div>
-</nav>
-  )
-  return (
-    <div className="page-header">
-      <h1>Fungius</h1>
-      <div className="fb-share-button" data-href="https://fungius.com/" data-layout="button_count" data-size="small"><a target="_blank" rel="noreferrer noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffungius.com%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
-      <h6>{props.visibleFungiCount} Matches</h6>
-    </div>
+        </ul>
+      </div>
+    </nav>
   )
 }
 
