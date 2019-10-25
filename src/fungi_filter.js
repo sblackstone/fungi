@@ -16,7 +16,7 @@ const FilterField = (props) => {
       label = labelMap[label];
     }
     return (
-      <div className="form-group col col-xs-6">
+      <div className="form-group col col-xs-12">
         <label>{label}</label>
         <select className="form-control form-control-sm" value={props.filters[props.field]} onChange={(e) => props.updateFilterSettings(props.field, e.target.value)}>
           <option value="">Any</option>
@@ -60,7 +60,7 @@ class FungiFilter extends React.Component {
     render() {
       return (
         <React.Fragment>
-          <div className="form-group">
+          <div className="form-group col col-xs-12">
             <label>Name</label>
             <input className="form-control form-control-sm" placeholder="Search by Name" type="text" value={this.state.nameSearch} onChange={this.updateNameSearch.bind(this)} />
           </div>
