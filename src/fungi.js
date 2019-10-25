@@ -7,21 +7,21 @@ import { getFungi } from './get_fungi';
 
 function PageHeader(props) {
   return (
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Fungius</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+      <a className="navbar-brand" href="#">Fungius</a>
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="navbar-form form-inline my-2 my-lg-0">
+      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <form className="navbar-form form-inline my-2 my-lg-0">
           <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
         </form>
-        <ul class="navbar-nav mr-auto">
-        <li claaName="nav-item">
+        <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
         <h6>{props.visibleFungiCount} Matches</h6>
 
         </li>
-        <li class="nav-item">
+        <li className="nav-item">
           <button className="btn btn-sm btn-primary " onClick={props.resetFilters}>Reset</button>
         </li>
 
