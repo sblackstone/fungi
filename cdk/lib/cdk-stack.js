@@ -4,8 +4,10 @@ const s3deploy = require('@aws-cdk/aws-s3-deployment');
 const lambda = require("@aws-cdk/aws-lambda");
 const cloudfront = require("@aws-cdk/aws-cloudfront");
 const route53 = require('@aws-cdk/aws-route53');
-const targets = require('@aws-cdk/aws-route53-targets');
+const targets53 = require('@aws-cdk/aws-route53-targets');
 const certmgr = require('@aws-cdk/aws-certificatemanager');
+const events = require('@aws-cdk/aws-events');
+const targets = require('@aws-cdk/aws-events-targets');
 
 class CdkStack extends cdk.Stack {
   /**
@@ -91,11 +93,11 @@ class CdkStack extends cdk.Stack {
   linkZoneToCloudFront() {
     new route53.AaaaRecord(this, 'ipv6', {
       zone: this.zone,
-      target: route53.AddressRecordTarget.fromAlias(new targets.CloudFrontTarget(this.distribution))
+      target: route53.AddressRecordTarget.fromAlias(new targets53.CloudFrontTarget(this.distribution))
     });
     new route53.ARecord(this, 'ipv4', {
       zone: this.zone,
-      target: route53.AddressRecordTarget.fromAlias(new targets.CloudFrontTarget(this.distribution))
+      target: route53.AddressRecordTarget.fromAlias(new targets53.CloudFrontTarget(this.distribution))
     });
 
 
@@ -108,11 +110,20 @@ class CdkStack extends cdk.Stack {
     });
   }
 
+  scheduleLambda() {
+    this.scheduleRule = new events.Rule(this, 'Rule', {
+      schedule: events.Schedule.expression('cron(4 0 * * ? *)')
+    });
+
+    this.scheduleRule.addTarget(new targets.LambdaFunction(this.importLambda));
+  }
+
   constructor(scope, id, props) {
     super(scope, id, props);
     this.addDepLayer();
     this.createBucket();
     this.createLambda();
+    this.scheduleLambda();
     this.createWebsite();
     this.createZone();
     this.createCert();
