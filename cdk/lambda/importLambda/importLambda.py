@@ -178,7 +178,7 @@ def downloadImage(path, imgUrl):
         if r.status_code == 200:
             print("WRITING IMAGE")
             object = s3.Object(BUCKET_NAME, path)
-            object.put(Body=r.content,ACL="public-read")
+            object.put(Body=r.content,ACL="public-read",ContentType=r.headers['Content-Type'])
         else:
             print(r.status_code)
 
