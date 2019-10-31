@@ -16,7 +16,7 @@ function PageHeader(props) {
         <form className="row">
           <FungiFilter fungiMeta={props.fungiMeta} updateFilterSettings={props.updateFilterSettings} filters={props.filters} />
         </form>
-        <ul className="navbar-nav mr-auto">
+        <ul className="navbar-nav ml-3">
           <li className="nav-item">
             <a className="nav-link" onClick={props.resetFilters}>Reset</a>
           </li>
