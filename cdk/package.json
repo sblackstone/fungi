@@ -7,24 +7,16 @@
   "scripts": {
     "test": "tsc",
     "test:watch": "tsc -w",
-    "cdk": "cdk"
+    "deploy": "AWS_PROFILE=sblackstone npx cdk deploy"
   },
   "devDependencies": {
     "@types/node": "8.10.45",
-    "aws-cdk": "^1.14.0",
+    "aws-cdk": "^2.27.0",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@aws-cdk/aws-certificatemanager": "^1.14.0",
-    "@aws-cdk/aws-cloudfront": "^1.14.0",
-    "@aws-cdk/aws-events": "^1.15.0",
-    "@aws-cdk/aws-events-targets": "^1.15.0",
-    "@aws-cdk/aws-lambda": "^1.13.1",
-    "@aws-cdk/aws-route53": "^1.14.0",
-    "@aws-cdk/aws-route53-targets": "^1.14.0",
-    "@aws-cdk/aws-s3": "^1.13.1",
-    "@aws-cdk/aws-s3-deployment": "^1.13.1",
-    "@aws-cdk/core": "^1.14.0",
-    "source-map-support": "^0.5.9"
+    "aws-cdk-lib": "^2.27.0",
+    "constructs": "^10.1.33",
+    "source-map-support": "^0.5.21"
   }
 }

@@ -1,13 +1,14 @@
-const cdk = require('@aws-cdk/core');
-const s3  = require('@aws-cdk/aws-s3');
-const s3deploy = require('@aws-cdk/aws-s3-deployment');
-const lambda = require("@aws-cdk/aws-lambda");
-const cloudfront = require("@aws-cdk/aws-cloudfront");
-const route53 = require('@aws-cdk/aws-route53');
-const targets53 = require('@aws-cdk/aws-route53-targets');
-const certmgr = require('@aws-cdk/aws-certificatemanager');
-const events = require('@aws-cdk/aws-events');
-const targets = require('@aws-cdk/aws-events-targets');
+const s3 = require ('aws-cdk-lib').aws_s3;
+const s3deploy = require('aws-cdk-lib').aws_s3_deployment;
+const lambda = require('aws-cdk-lib').aws_lambda;
+const cloudfront = require('aws-cdk-lib').aws_cloudfront;
+const route53 = require('aws-cdk-lib').aws_route53;
+const cdk = require('aws-cdk-lib');
+const targets53 = require('aws-cdk-lib').aws_route53_targets;
+const certmgr = require('aws-cdk-lib').aws_certificatemanager;
+const events = require('aws-cdk-lib').aws_events;
+const targets = require('aws-cdk-lib').aws_events_targets;
+
 
 class CdkStack extends cdk.Stack {
   /**
@@ -25,7 +26,7 @@ class CdkStack extends cdk.Stack {
    });
 
   }
-  
+
   createCdn() {
     this.distribution = new cloudfront.CloudFrontWebDistribution(this, 'websiteDist', {
         originConfigs: [
@@ -81,12 +82,12 @@ class CdkStack extends cdk.Stack {
     this.bucket.grantReadWrite(this.importLambda)
 
   }
-  
+
   createZone() {
     this.zone = route53.HostedZone.fromHostedZoneAttributes(this, 'importedZoneCert', {
       zoneName: 'fungius.com',
       hostedZoneId: 'Z18HX7RPFFTK0A'
-    });    
+    });
   }
 
 
